@@ -7,40 +7,70 @@ final int xSpacing = 30;
 final int ySpacing = 30;
 float[][] zAxis;
 final int zDelta = 50;
+final float zBasis = 50;
 
-float xOff;
-float yOff;
+
+float xOff = 0;
+float yOff = 0;
+float movingXOffset = 0;
+float movingYOffset = 0;
+float offsetMove = 0.001;
+
+String path;
+long lastFileSize = 0;
 
 void setup() {
-  //size(500,500,P3D);
-  
+  //size(580,500,P3D);
   fullScreen(P3D);
+  
+  path = sketchPath();
 
   //cam = new PeasyCam(this, 100);
   //cam.setMinimumDistance(50);
   //cam.setMaximumDistance(2000);
 
-  xOff = 0;
-  yOff = 0;
 }
 
 void draw() {
   background(50);
-  //ambientLight();
   lights();  
   
   fill(0,0,255);
   stroke(0,0,200);
 
-  float offSet = 0.1;
+  float _off = 0.5;
+
+  File[] files = listFiles(path); // list of files
+  for (int i = 0; i < files.length; i++) {
+    File f = files[i];    
+    if (f.getName().equals("keyLog.txt")) {
+      if (f.length() > lastFileSize) {
+        lastFileSize = f.length();
+        offsetMove = 0.03;
+      } else {
+        offsetMove = 0.001;
+      }
+    }
+  }  
+  
+  //if (mousePressed) {
+  //  offsetMove = 0.01; 
+  //} else {
+  //  offsetMove = 0.001;
+  //}
+  
+  movingXOffset += offsetMove;
+  movingYOffset += offsetMove;
+ 
+  xOff = movingXOffset; 
   zAxis = new float[width+xSpacing+1][height+ySpacing+1];
   for (int i = 0; i <= width; i += xSpacing) {
+    yOff = movingYOffset; 
     for (int j = 0; j <= height; j += ySpacing) {
-      //zAxis[i][j] = random(-zDelta,zDelta)+50;
-      zAxis[i][j] = map(noise(xOff,yOff),0,1,0,100);
-      yOff += offSet;
+      zAxis[i][j] = map(noise(xOff,yOff),0,1,-50,200) + zBasis;
+      yOff += _off;
     }
-    xOff += offSet;
+    xOff += _off;
   }    
     
   beginShape(TRIANGLES);
@@ -60,3 +90,6 @@ void draw() {
   
   
 }
+
+// TODO1: acceleration of wave movement
+// TODO2: colors!
