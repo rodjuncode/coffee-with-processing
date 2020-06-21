@@ -1,4 +1,3 @@
-
 import peasy.*;
 
 PeasyCam cam;
@@ -9,19 +8,21 @@ float[][] zAxis;
 final int zDelta = 50;
 final float zBasis = 50;
 
-
 float xOff = 0;
 float yOff = 0;
 float movingXOffset = 0;
 float movingYOffset = 0;
-float offsetMove = 0.001;
+float offsetMove;
+final float maxOffsetMove = 0.02;
+final float minOffsetMove = 0.003;
+final float offsetForce = 0.02;
 
 String path;
-long lastFileSize = 0;
+long lastFileSize;
 
 void setup() {
-  //size(580,500,P3D);
-  fullScreen(P3D);
+  size(500,500,P3D);
+  //fullScreen(P3D);
   
   path = sketchPath();
 
@@ -29,36 +30,47 @@ void setup() {
   //cam.setMinimumDistance(50);
   //cam.setMaximumDistance(2000);
 
+  File[] files = listFiles(path); // list of files  
+  for (int i = 0; i < files.length; i++) {
+    File f = files[i];    
+    if (f.getName().equals("keyLog.txt")) {
+      lastFileSize = f.length();
+      break;
+    }
+  }
 }
 
 void draw() {
   background(50);
   lights();  
   
-  fill(0,0,255);
-  stroke(0,0,200);
-
-  float _off = 0.5;
+  fill(#ff006e);
+  noStroke();
+ 
 
   File[] files = listFiles(path); // list of files
   for (int i = 0; i < files.length; i++) {
     File f = files[i];    
     if (f.getName().equals("keyLog.txt")) {
-      if (f.length() > lastFileSize) {
+      if (f.length() > lastFileSize) {  // key logger is growing
+        offsetMove += offsetForce;    // accelerate
+        if (offsetMove > maxOffsetMove) {
+          offsetMove = maxOffsetMove; // wait there
+        }
         lastFileSize = f.length();
-        offsetMove = 0.03;
       } else {
-        offsetMove = 0.001;
+        offsetMove -= offsetForce*0.005; // not typing
+        if (offsetMove < minOffsetMove) {
+          offsetMove = minOffsetMove; // keep moving
+        }
       }
+      println(offsetMove);
     }
-  }  
+  } 
   
-  //if (mousePressed) {
-  //  offsetMove = 0.01; 
-  //} else {
-  //  offsetMove = 0.001;
-  //}
   
+    
+  float _off = 0.5;
   movingXOffset += offsetMove;
   movingYOffset += offsetMove;
  
@@ -91,5 +103,4 @@ void draw() {
   
 }
 
-// TODO1: acceleration of wave movement
-// TODO2: colors!
+// TODO2: explore colors!
