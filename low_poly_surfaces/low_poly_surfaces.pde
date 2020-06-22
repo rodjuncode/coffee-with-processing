@@ -1,7 +1,5 @@
 import peasy.*;
 
-PeasyCam cam;
-
 final int xSpacing = 30;
 final int ySpacing = 30;
 float[][] zAxis;
@@ -12,23 +10,18 @@ float xOff = 0;
 float yOff = 0;
 float movingXOffset = 0;
 float movingYOffset = 0;
-float offsetMove;
 final float maxOffsetMove = 0.02;
 final float minOffsetMove = 0.003;
+float offsetMove = minOffsetMove;
 final float offsetForce = 0.02;
 
 String path;
 long lastFileSize;
 
 void setup() {
-  size(500,500,P3D);
-  //fullScreen(P3D);
+  size(700,700,P3D);
   
   path = sketchPath();
-
-  //cam = new PeasyCam(this, 100);
-  //cam.setMinimumDistance(50);
-  //cam.setMaximumDistance(2000);
 
   File[] files = listFiles(path); // list of files  
   for (int i = 0; i < files.length; i++) {
@@ -42,29 +35,28 @@ void setup() {
 
 void draw() {
   background(50);
-  lights();  
+  colorMode(HSB,360,100,100);
+  lights();
   
-  fill(#ff006e);
+  fill(#003594);
   noStroke();
  
-
   File[] files = listFiles(path); // list of files
   for (int i = 0; i < files.length; i++) {
     File f = files[i];    
     if (f.getName().equals("keyLog.txt")) {
       if (f.length() > lastFileSize) {  // key logger is growing
-        offsetMove += offsetForce;    // accelerate
+        offsetMove += offsetForce;      // accelerate
         if (offsetMove > maxOffsetMove) {
-          offsetMove = maxOffsetMove; // wait there
+          offsetMove = maxOffsetMove;   // wait there!
         }
         lastFileSize = f.length();
       } else {
         offsetMove -= offsetForce*0.005; // not typing
         if (offsetMove < minOffsetMove) {
-          offsetMove = minOffsetMove; // keep moving
+          offsetMove = minOffsetMove;    // keep moving!
         }
       }
-      println(offsetMove);
     }
   } 
   
@@ -88,19 +80,16 @@ void draw() {
   beginShape(TRIANGLES);
   for (int i = 0; i <= width; i += xSpacing) {
     for (int j = 0; j <= height; j += ySpacing) {
-      // triangulo A
+      // 1st
       vertex(i,j,zAxis[i][j]);
       vertex(i,j+ySpacing,zAxis[i][j+ySpacing]);
       vertex(i+xSpacing,j+ySpacing,zAxis[i+xSpacing][j+ySpacing]);
-      // triangulo B
+      // 2nd
       vertex(i,j,zAxis[i][j]);
       vertex(i+xSpacing,j,zAxis[i+xSpacing][j]);
       vertex(i+xSpacing,j+ySpacing,zAxis[i+xSpacing][j+ySpacing]);
     }
   }
-  endShape();
-  
+  endShape(); 
   
 }
-
-// TODO2: explore colors!
