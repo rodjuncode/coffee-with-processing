@@ -1,5 +1,5 @@
 class Flag {
-  boolean type;
+  int type;
   PVector position;
   float size;
   color myColor;
@@ -8,25 +8,25 @@ class Flag {
   float flagHeight;
   float flagCorner;
   
-  Flag(boolean t, PVector p, float s, color c) {
+  Flag(int t, PVector p, float s, color c) {
     this.type      = t;
     this.position  = p;
     this.size      = s;
     this.myColor   = c;
 
-    this.flagHeight = this.size;
-    this.flagWidth  = flagHeight*0.75;
-    this.flagCorner = flagHeight*0.6;
+    this.flagHeight = this.size*0.8;
+    this.flagWidth  = this.size*0.6;
+    this.flagCorner = this.flagHeight*0.6;
   }
   
   void show() {
     push();    
-    translate(this.position.x, this.position.y);
+    translate(this.position.x+this.size*0.2,this.position.y+this.size*0.1);
     
     fill(this.myColor);
     noStroke();
   
-    if (type) {
+    if (this.type == FORK_FLAG_TYPE) {
       beginShape();
       vertex(0,0);
       vertex(this.flagWidth,0);
@@ -34,7 +34,7 @@ class Flag {
       vertex(this.flagWidth/2,this.flagCorner);
       vertex(0,this.flagHeight);
       endShape(CLOSE);
-    } else {
+    } else if (this.type == ARROW_FLAG_TYPE) {
       beginShape();
       vertex(0,0);
       vertex(this.flagWidth,0);
