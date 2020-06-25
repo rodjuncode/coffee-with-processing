@@ -21,7 +21,7 @@ class Flag {
   
   void show() {
     push();    
-    translate(this.position.x+this.size*0.2,this.position.y+this.size*0.1);
+    translate(this.position.x+this.size*0.2,this.position.y+this.size*0.1,this.position.z);
     
     fill(this.myColor);
     noStroke();
