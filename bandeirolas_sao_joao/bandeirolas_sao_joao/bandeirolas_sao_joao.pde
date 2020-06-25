@@ -6,12 +6,28 @@ float flagSize = 70;
 final int FORK_FLAG_TYPE   = 0;
 final int ARROW_FLAG_TYPE  = 1;
 ArrayList<Flag> flags;
+ArrayList<Integer> palette;
 
 void setup() {
   size(700,700,P3D);
   colorMode(HSB,360,100,100,100);
   flags = new ArrayList<Flag>();
-  
+ 
+  // load colors
+  palette = new ArrayList<Integer>();
+  int _alpha = 90;
+  palette.add(new Integer(color(231, 88, 98,_alpha)));
+  palette.add(new Integer(color(67, 69, 99,_alpha)));
+  palette.add(new Integer(color(4, 98, 91,_alpha)));
+  palette.add(new Integer(color(85, 83, 91,_alpha)));
+  palette.add(new Integer(color(33, 96, 99,_alpha)));
+  //palette.add(new Integer(color(329, 90, 39,_alpha)));
+  //palette.add(new Integer(color(248, 74, 31,_alpha)));
+  palette.add(new Integer(color(0, 0, 100,_alpha)));
+  //palette.add(new Integer(color(85, 43, 65,_alpha)));
+  palette.add(new Integer(color(190, 69, 97,_alpha)));
+ 
+
 
   //cam = new PeasyCam(this, 100);
   //cam.setMinimumDistance(50);
@@ -23,7 +39,9 @@ void setup() {
     for (int j = -100; j < 7000; j += flagSize) {
       //if (missingFlag.x != i || missingFlag.y != j) {
         PVector fPosition = new PVector(i,140,-j);
-        Flag f = new Flag((int) Math.round(random(1)),fPosition,flagSize,color(random(360),80,100,90));
+        Flag f = 
+          new Flag((int) Math.round(random(1)),fPosition,flagSize,
+          color(palette.get((int)Math.floor(random(palette.size())))));
         flags.add(f);
       //}
     }
@@ -32,8 +50,11 @@ void setup() {
 }
 
 void draw() {
-  background(239, 97, 25,100); 
-  lights();
+  background(239, 97, 25,100);
+  //background(217, 77, 100,100);
+  
+  lights();  
+    
   
   rotateX(radians(35));
   rotateY(radians(-20));
@@ -45,8 +66,9 @@ void draw() {
  
 }
 
-// TODO 1: reference point for flag's position and drawing / flag rotation
-// TODO 4: color palette
-// TODO 6: "varal" (wire?)
+// BACKLOG
+// TODO 9: lights
 // TODO 7: animation
-// TODO 8: rolling flag cone!!!
+// TODO 8: flag tunnel!!!
+// TODO 6: "varal" (wire?)
+// TODO 1: reference point for flag's position and drawing / flag rotation
