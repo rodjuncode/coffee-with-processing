@@ -21,24 +21,19 @@ void setup() {
   palette.add(new Integer(color(4, 98, 91,_alpha)));
   palette.add(new Integer(color(85, 83, 91,_alpha)));
   palette.add(new Integer(color(33, 96, 99,_alpha)));
-  //palette.add(new Integer(color(329, 90, 39,_alpha)));
-  //palette.add(new Integer(color(248, 74, 31,_alpha)));
   palette.add(new Integer(color(0, 0, 100,_alpha)));
-  //palette.add(new Integer(color(85, 43, 65,_alpha)));
   palette.add(new Integer(color(190, 69, 97,_alpha)));
- 
 
-
-  //cam = new PeasyCam(this, 100);
-  //cam.setMinimumDistance(50);
-  //cam.setMaximumDistance(2000);  
+//  cam = new PeasyCam(this, 100);
+//  cam.setMinimumDistance(50);
+//  cam.setMaximumDistance(2000);  
   
   //PVector missingFlag = new PVector((int) Math.floor(random(width/flagSize)),(int) Math.floor(random(height/flagSize)));
   
-  for (float i = -width*5; i < width*2; i += flagSize) {
+  for (float i = -width*6; i < width*2.5; i += flagSize) {
     for (int j = -100; j < 7000; j += flagSize) {
       //if (missingFlag.x != i || missingFlag.y != j) {
-        PVector fPosition = new PVector(i,140,-j);
+        PVector fPosition = new PVector(i,height/2,10-j);
         Flag f = 
           new Flag((int) Math.round(random(1)),fPosition,flagSize,
           color(palette.get((int)Math.floor(random(palette.size())))));
@@ -50,14 +45,10 @@ void setup() {
 }
 
 void draw() {
-  background(239, 97, 25,100);
-  //background(217, 77, 100,100);
+  background(239,80,25,100);
   
-  lights();  
-    
-  
-  rotateX(radians(35));
-  rotateY(radians(-20));
+  rotateX(radians(32));
+  rotateY(radians(-15));
   
   for (int i = 0; i < flags.size(); i++) {
     flags.get(i).show();
