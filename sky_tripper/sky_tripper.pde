@@ -5,8 +5,10 @@ PeasyCam cam;
 final int cubeQty = 10;
 final int cubeSize = 25;
 
-PVector colorSubmarine;
-PVector colorDestination;
+PVector sub;
+
+ArrayList<PVector> destinations;
+int currentDestination = 0;
 
 void setup() {
   size(700,700,P3D); 
@@ -15,40 +17,54 @@ void setup() {
   cam.setMinimumDistance(10);
   cam.setMaximumDistance(2500); 
   
-  colorSubmarine = new PVector(0,0,255);
-  colorDestination = new PVector(38, 70, 83);
+  sub = new PVector(38, 70, 83);
   
+  destinations = new ArrayList<PVector>();
+  
+  for (int i = 0; i < 20; i++) {
+    destinations.add(new PVector(random(255), random(255), random(255)));
+  }
+    
 }
 
 void draw() {
-  background(colorSubmarine.x,colorSubmarine.y,colorSubmarine.z);
+  background(sub.x,sub.y,sub.z);
   //lights();
-  
+
   translate(-cubeQty/2*cubeSize,-cubeQty/2*cubeSize,-cubeQty/2*cubeSize);
-    
-    
+
+  // show submarine
   push();
   noStroke();
   fill(255);
-  translate(colorSubmarine.x,colorSubmarine.y,colorSubmarine.z);
+  translate(sub.x,sub.y,sub.z);
   sphere(7);
   pop();
 
-  push();
-  noStroke();
-  fill(255);
-  translate(colorDestination.x,colorDestination.y,colorDestination.z);
-  box(5);
-  pop();
-
-  //push();
-  //stroke(0);
-  //strokeWeight(5);
-  //line(colorShip.x,colorShip.y,colorShip.z,colorDestination.x,colorDestination.y,colorDestination.z);
-  //pop();
-
-
+  // show destination
+  for (int i = currentDestination; i < destinations.size(); i++) {
+    push();
+    noStroke();
+    fill(255);
+    translate(destinations.get(i).x,destinations.get(i).y,destinations.get(i).z);
+    box(5);
+    pop();
+  }
   
+  // moving submarine
+  if (destinations.get(currentDestination).dist(sub) > 1) {
+    PVector newDirection = PVector.sub(destinations.get(currentDestination),sub).normalize();
+    sub.add(newDirection);
+    println(sub.x + "/" + sub.y + "/" + sub.z);  
+  } else {
+    if (currentDestination < destinations.size() - 1) {
+      currentDestination++;
+    }
+  }
+  
+    
+
+  // rgb box
   for (int i = 0; i <= cubeQty; i++) {
     for (int j = 0; j <= cubeQty; j++) {
       for (int k = 0; k <= cubeQty; k++) {
@@ -70,6 +86,6 @@ void draw() {
 
 // BACKLOG
 // 1) Better modelling
-// 2) Moving Color Submarine
-// 3) Provide path with several stops for the color submarine
-// 4) Background changes with the color where the sub is
+// 2) Moving Color Submarine [DONE]
+// 3) Provide path with several stops for the color submarine [DONE]
+// 4) Background changes with the color where the sub is [DONE]
