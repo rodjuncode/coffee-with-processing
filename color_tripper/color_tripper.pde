@@ -10,7 +10,6 @@ PVector sub;
 Gradient gradient;
 
 ArrayList<PVector> destinations;
-int currentDestination = 0;
 
 void setup() {
   size(700,700,P3D); 
@@ -20,7 +19,7 @@ void setup() {
   cam.setMaximumDistance(2500); 
 
   gradient = new Gradient();
-  for (int i = 0; i < 2500; i++) {
+  for (int i = 0; i < 50; i++) {
     gradient.addColor(new PVector(random(255), random(255), random(255)));
   }
   
@@ -35,15 +34,15 @@ void draw() {
   translate(-cubeQty/2*cubeSize,-cubeQty/2*cubeSize,-cubeQty/2*cubeSize);
 
   showSub(sub,color(255),7);
-  showDestination(destinations);
+  showDestination(destinations,gradient._index);
   
   gradient.move();
 
 }
 
-void showDestination(ArrayList<PVector> destinations) {
+void showDestination(ArrayList<PVector> destinations, int currentIndex) {
   // show destination
-  for (int i = currentDestination; i < destinations.size(); i++) {
+  for (int i = currentIndex; i < destinations.size(); i++) {
     push();
     stroke(destinations.get(i).x,destinations.get(i).y,destinations.get(i).z);
     noFill();

@@ -18,7 +18,7 @@ class Gradient {
       this._index = 1; 
     }
   }
-  
+
   PVector getColor() {
     return this.currentColor;    
   }
