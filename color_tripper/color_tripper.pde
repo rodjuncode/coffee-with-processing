@@ -7,6 +7,8 @@ final int cubeSize = 25;
 
 PVector sub;
 
+Gradient gradient;
+
 ArrayList<PVector> destinations;
 int currentDestination = 0;
 
@@ -16,55 +18,53 @@ void setup() {
   cam = new PeasyCam(this, 1000);
   cam.setMinimumDistance(10);
   cam.setMaximumDistance(2500); 
-  
-  sub = new PVector(38, 70, 83);
-  
-  destinations = new ArrayList<PVector>();
-  
-  for (int i = 0; i < 20; i++) {
-    destinations.add(new PVector(random(255), random(255), random(255)));
+
+  gradient = new Gradient();
+  for (int i = 0; i < 2500; i++) {
+    gradient.addColor(new PVector(random(255), random(255), random(255)));
   }
+  
     
 }
 
 void draw() {
-  background(sub.x,sub.y,sub.z);
-  //lights();
+  sub = gradient.getColor();
+  destinations = gradient.getColors();
 
+  background(sub.x,sub.y,sub.z);
   translate(-cubeQty/2*cubeSize,-cubeQty/2*cubeSize,-cubeQty/2*cubeSize);
 
-  // show submarine
-  push();
-  noStroke();
-  fill(255);
-  translate(sub.x,sub.y,sub.z);
-  sphere(7);
-  pop();
+  showSub(sub,color(255),7);
+  showDestination(destinations);
+  
+  gradient.move();
 
+}
+
+void showDestination(ArrayList<PVector> destinations) {
   // show destination
   for (int i = currentDestination; i < destinations.size(); i++) {
     push();
-    noStroke();
-    fill(255);
+    stroke(destinations.get(i).x,destinations.get(i).y,destinations.get(i).z);
+    noFill();
     translate(destinations.get(i).x,destinations.get(i).y,destinations.get(i).z);
     box(5);
     pop();
   }
-  
-  // moving submarine
-  if (destinations.get(currentDestination).dist(sub) > 1) {
-    PVector newDirection = PVector.sub(destinations.get(currentDestination),sub).normalize();
-    sub.add(newDirection);
-    println(sub.x + "/" + sub.y + "/" + sub.z);  
-  } else {
-    if (currentDestination < destinations.size() - 1) {
-      currentDestination++;
-    }
-  }
-  
-    
+}
 
-  // rgb box
+void showSub(PVector pos, int col, float siz) {
+  // show submarine
+  push();
+  noStroke();
+  fill(col);
+  translate(pos.x,pos.y,pos.z);
+  sphere(siz);
+  pop();  
+}
+
+void showRGBBox(int cubeQty,int cubeSize) {
+  //// rgb box
   for (int i = 0; i <= cubeQty; i++) {
     for (int j = 0; j <= cubeQty; j++) {
       for (int k = 0; k <= cubeQty; k++) {
@@ -80,12 +80,5 @@ void draw() {
         pop();
       }
     }
-  }
-  
+  }  
 }
-
-// BACKLOG
-// 1) Better modelling
-// 2) Moving Color Submarine [DONE]
-// 3) Provide path with several stops for the color submarine [DONE]
-// 4) Background changes with the color where the sub is [DONE]
