@@ -1,5 +1,5 @@
 # coffee-with-processing
-This is the code repository produced during my live coding sessions on Twitch (check it ou on www.twitch.tv/rodjunjun).
+This is the code repository produced during my live coding sessions on Twitch (check it out on www.twitch.tv/rodjunjun).
 
 Here are the sketches done, so far:
 
