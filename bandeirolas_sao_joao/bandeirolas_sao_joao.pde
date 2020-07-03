@@ -8,28 +8,39 @@ final int ARROW_FLAG_TYPE  = 1;
 ArrayList<Flag> flags;
 ArrayList<Integer> palette;
 
+Gradient gradient;
+
 final int flagQtyX = 90;
 final int flagQtyZ = 100;
 
 void setup() {
   size(700,700,P3D);
-  colorMode(HSB,360,100,100,100);
+  //colorMode(HSB,360,100,100,100);
   frameRate(12);
   
   flags = new ArrayList<Flag>();
 
   // load colors
   palette = new ArrayList<Integer>();
-  int _alpha = 100;
-  palette.add(new Integer(color(358, 65, 100,_alpha)));
-  palette.add(new Integer(color(44, 77, 100,_alpha)));
-  palette.add(new Integer(color(83, 81, 79,_alpha)));
-  palette.add(new Integer(color(203, 87, 77,_alpha)));
-  palette.add(new Integer(color(265, 48, 58,_alpha)));
+  int _alpha = 255;
+  // HSB
+  //palette.add(new Integer(color(358, 65, 100,_alpha)));
+  //palette.add(new Integer(color(44, 77, 100,_alpha)));
+  //palette.add(new Integer(color(83, 81, 79,_alpha)));
+  //palette.add(new Integer(color(203, 87, 77,_alpha)));
+  //palette.add(new Integer(color(265, 48, 58,_alpha)));
 
-//  cam = new PeasyCam(this, 100);
-//  cam.setMinimumDistance(100);
-//  cam.setMaximumDistance(5000);  
+  // RGB
+  palette.add(new Integer(color(255, 89, 95,_alpha)));
+  palette.add(new Integer(color(255, 203, 59,_alpha)));
+  palette.add(new Integer(color(139, 201, 38,_alpha)));
+  palette.add(new Integer(color(26, 131, 196,_alpha)));
+  palette.add(new Integer(color(106, 77, 148,_alpha)));
+
+
+  //cam = new PeasyCam(this, 100);
+  //cam.setMinimumDistance(100);
+  //cam.setMaximumDistance(5000);  
   
   for (int j = 0; j < flagQtyZ; j++) {
     for (int i = 0; i < flagQtyX; i++) {       
@@ -42,12 +53,20 @@ void setup() {
       flags.add(f);
     }
   }
+  
+  gradient = new Gradient();
+  gradient.addColor(new PVector(0, 5, 10));
+  gradient.addColor(new PVector(3, 4, 94));
+  gradient.addColor(new PVector(0, 180, 216));
+  gradient.addColor(new PVector(3, 4, 94));
  
 }
 
 void draw() {
   //background(239,80,25,100); // night
-  background(190, 19, 97,100); // day
+  //background(190, 19, 97,100); // day
+  PVector bg = gradient.getColor();
+  background(bg.x,bg.y,bg.z,255); 
   camera(0, 400, 0, -2500, -2400, -3500, 0.0, 1.0, 0.0);      
 
   // copy first row in another array
@@ -76,7 +95,7 @@ void draw() {
     flags.get(i).show();
   }
 
-  println(frameRate);
+  gradient.move();
 
 }
 

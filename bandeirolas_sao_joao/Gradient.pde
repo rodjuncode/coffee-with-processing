@@ -30,7 +30,7 @@ class Gradient {
   void move() {
     if (this.colors.size() > 1) {
       if (this._index == this.colors.size()) {
-        this._index = 0; //<>//
+        this._index = 0;
       }
       if (this.colors.get(this._index).dist(this.currentColor) > 1) {
         PVector newColor = 

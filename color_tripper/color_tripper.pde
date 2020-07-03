@@ -17,13 +17,19 @@ void setup() {
   cam = new PeasyCam(this, 1000);
   cam.setMinimumDistance(10);
   cam.setMaximumDistance(2500); 
+  
+
 
   gradient = new Gradient();
-  for (int i = 0; i < 50; i++) {
-    gradient.addColor(new PVector(random(255), random(255), random(255)));
-  }
+  //for (int i = 0; i < 50; i++) {
+  //  gradient.addColor(new PVector(random(255), random(255), random(255)));
+  //}
   
-    
+  frameRate(12);
+  gradient.addColor(new PVector(0, 5, 10));
+  gradient.addColor(new PVector(3, 4, 94));
+  gradient.addColor(new PVector(0, 180, 216));
+  gradient.addColor(new PVector(3, 4, 94));
 }
 
 void draw() {
