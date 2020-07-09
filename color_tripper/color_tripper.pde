@@ -21,15 +21,15 @@ void setup() {
 
 
   gradient = new Gradient();
-  //for (int i = 0; i < 50; i++) {
-  //  gradient.addColor(new PVector(random(255), random(255), random(255)));
-  //}
+  for (int i = 0; i < 2000; i++) {
+    gradient.addColor(new PVector(random(255), random(255), random(255)));
+  }
   
-  frameRate(12);
-  gradient.addColor(new PVector(0, 5, 10));
-  gradient.addColor(new PVector(3, 4, 94));
-  gradient.addColor(new PVector(0, 180, 216));
-  gradient.addColor(new PVector(3, 4, 94));
+  //frameRate(12);
+  //gradient.addColor(new PVector(0, 5, 10));
+  //gradient.addColor(new PVector(3, 4, 94));
+  //gradient.addColor(new PVector(0, 180, 216));
+  //gradient.addColor(new PVector(3, 4, 94));
 }
 
 void draw() {
@@ -39,10 +39,12 @@ void draw() {
   background(sub.x,sub.y,sub.z);
   translate(-cubeQty/2*cubeSize,-cubeQty/2*cubeSize,-cubeQty/2*cubeSize);
 
-  showSub(sub,color(255),7);
+  showSub(sub,color(255,209,0),3);
   showDestination(destinations,gradient._index);
   
   gradient.move();
+  
+  saveFrame("output/video/####.png");
 
 }
 
