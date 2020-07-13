@@ -1,36 +1,47 @@
-HatchingTile h;
+
+
+ArrayList<HatchingTile> hatching; 
 
 float angulo = 0;
-float lado = 250;
+float lado = 50;
+
+
 
 void setup() {
   size(700,700);
-  h = new HatchingTile(new PVector(0,0), lado, 1);
+  
+  hatching = new ArrayList<HatchingTile>(); //<>//
+  int tilesQty = 8;
+  for (int i = 0; i <= tilesQty; i++) {
+    for (int j = 0; j <= tilesQty; j++) {
+      HatchingTile h = new HatchingTile(new PVector(i*lado,j*lado),lado,i,1);
+      hatching.add(h); //<>//
+    }
+  }
   
 }
 
 
 void draw() {
-  background(50); 
+  background(255); 
   noFill();
-  stroke(255);
   
   translate(100,100);
   
-  //int qty = 5;
-  //for (int i = 0; i < lado; i+=lado/qty) {
-  //  for (int j = 0; j < lado; j+=lado/qty) {
-  //    rect(i,j,lado/qty,lado/qty);
-  //  }
-  //} 
+  float c = random(0,20);
+
+  for (int i = 0; i < hatching.size(); i++) {
+    this.hatching.get(i).chaos = c;
+    this.hatching.get(i).updateStrokes();
+    hatching.get(i).show(); 
+  }
   
-  strokeWeight(5);
-  stroke(255,0,0);
-  h.show();
-  
+  println(frameRate);
   
 }
 
 // BACKLOG
-// TODO #1: scale hatching. Limit stroke size
-// TODO #2: fill shapes
+// TODO #3: more levels (10 or 15(!))
+// TODO #6: perlin noise for chaos
+// TODO #4: animate with chaos
+// TODO #5: draw photos
