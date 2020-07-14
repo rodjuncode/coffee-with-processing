@@ -34,8 +34,8 @@ void setup() {
   palette.add(new Integer(color(255, 89, 95,_alpha)));
   palette.add(new Integer(color(255, 203, 59,_alpha)));
   palette.add(new Integer(color(139, 201, 38,_alpha)));
-  palette.add(new Integer(color(26, 131, 196,_alpha)));
-  palette.add(new Integer(color(106, 77, 148,_alpha)));
+  palette.add(new Integer(color(0, 204, 255,_alpha)));
+  palette.add(new Integer(color(255, 255, 255,_alpha)));
 
 
   //cam = new PeasyCam(this, 100);

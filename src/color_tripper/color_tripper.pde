@@ -44,8 +44,8 @@ void draw() {
   
   gradient.move();
   
-  saveFrame("output/video/####.png");
-
+    saveFrame("../../../output/color-tripper/####.png");
+  
 }
 
 void showDestination(ArrayList<PVector> destinations, int currentIndex) {

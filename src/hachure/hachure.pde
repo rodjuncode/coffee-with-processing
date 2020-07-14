@@ -7,7 +7,7 @@ float yOff = 0;
 int chaos = 1;
 
 void setup() {
-  size(700,700);
+  size(700,700,P2D);
   
   hatching = new ArrayList<HatchingTile>(); //<>//
   int tilesQty = 35;
@@ -33,15 +33,13 @@ void draw() {
   
   for (int i = 0; i < hatching.size(); i++) {
     this.hatching.get(i).chaos = chaos;
-    this.hatching.get(i).updateStrokes();
+    //this.hatching.get(i).updateStrokes();
     hatching.get(i).show(); 
   }
   
   chaos += 1;
   
   println(frameRate);
-  
-  saveFrame("output/#####.png");
   
 }
 
