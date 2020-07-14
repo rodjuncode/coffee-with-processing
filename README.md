@@ -1,7 +1,7 @@
 # coffee-with-processing
 This is the code repository produced during my live coding sessions on Twitch (check it out on www.twitch.tv/rodjunjun).
 
-Here are the sketches I've done, so far:
+Here are the sketches I've done, so far (wait a little bit until the animated GIFs are loaded):
 
 # Low Poly Surfaces
 Generates a blue low poly surface (inspired on my profile picture) that reacts to the keyboard input via a separated python script. It's used as the Twitch lives background.
