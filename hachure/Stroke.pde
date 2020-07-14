@@ -6,6 +6,8 @@ class Stroke {
   
   float chaos;
   
+  int my_color;
+  
   Stroke(PVector p1, PVector p2, float w, float c) {
     this.chaos = c;
     this.weight = w + random(-0.2,0.2);

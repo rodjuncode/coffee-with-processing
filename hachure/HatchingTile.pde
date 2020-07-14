@@ -12,7 +12,7 @@ class HatchingTile {
   float baseWeight;
   float chaos; 
 
-  final int strokeQty = 10; // <- pode influenciar value
+  final int strokeQty = 10;
   final float weightWhenSize100 = 2;
   
   HatchingTile(PVector p, float s, int v, float c) {

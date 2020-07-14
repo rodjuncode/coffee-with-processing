@@ -1,47 +1,51 @@
+ArrayList<HatchingTile> hatching;
+float size = 20;
 
+float xOff = 0;
+float yOff = 0;
 
-ArrayList<HatchingTile> hatching; 
-
-float angulo = 0;
-float lado = 50;
-
-
+int chaos = 1;
 
 void setup() {
   size(700,700);
   
   hatching = new ArrayList<HatchingTile>(); //<>//
-  int tilesQty = 8;
+  int tilesQty = 35;
   for (int i = 0; i <= tilesQty; i++) {
     for (int j = 0; j <= tilesQty; j++) {
-      HatchingTile h = new HatchingTile(new PVector(i*lado,j*lado),lado,i,1);
+      float n = noise(xOff,yOff);
+      int value = Math.round(map(n,0,1,0,8));
+      HatchingTile h = new HatchingTile(new PVector(i*size,j*size),size,value,chaos);
       hatching.add(h); //<>//
+      yOff += 0.15;      
     }
+    xOff += 0.01;
   }
   
 }
 
 
 void draw() {
-  background(255); 
+  background(255);
   noFill();
   
-  translate(100,100);
   
-  float c = random(0,20);
-
+  
   for (int i = 0; i < hatching.size(); i++) {
-    this.hatching.get(i).chaos = c;
+    this.hatching.get(i).chaos = chaos;
     this.hatching.get(i).updateStrokes();
     hatching.get(i).show(); 
   }
   
+  chaos += 1;
+  
   println(frameRate);
+  
+  saveFrame("output/#####.png");
   
 }
 
 // BACKLOG
+// TODO #8: draw photos
 // TODO #3: more levels (10 or 15(!))
-// TODO #6: perlin noise for chaos
-// TODO #4: animate with chaos
-// TODO #5: draw photos
+// TODO #9: paper texture
