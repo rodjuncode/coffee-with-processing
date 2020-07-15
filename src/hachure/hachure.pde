@@ -4,10 +4,10 @@ float size = 20;
 float xOff = 0;
 float yOff = 0;
 
-int chaos = 1;
+int chaos = 2;
 
 void setup() {
-  size(700,700,P2D);
+  size(700,700,FX2D);
   
   hatching = new ArrayList<HatchingTile>(); //<>//
   int tilesQty = 35;
@@ -29,8 +29,6 @@ void draw() {
   background(255);
   noFill();
   
-  
-  
   for (int i = 0; i < hatching.size(); i++) {
     this.hatching.get(i).chaos = chaos;
     //this.hatching.get(i).updateStrokes();
@@ -44,6 +42,7 @@ void draw() {
 }
 
 // BACKLOG
+// TODO #10: change chaos through space
 // TODO #8: draw photos
 // TODO #3: more levels (10 or 15(!))
 // TODO #9: paper texture
