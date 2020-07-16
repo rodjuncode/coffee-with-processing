@@ -16,11 +16,11 @@ final float offsetForce = 0.01;
 String path;
 long lastFileSize;
 
-Gradient bg;
+ColorTripper bg;
 
 void setup() {
-  //size(700,700,P3D);
-  fullScreen(P3D);
+  size(700,700,P3D);
+  //fullScreen(P3D);
   
   path = sketchPath();
 
@@ -33,7 +33,7 @@ void setup() {
     }
   }
   
-  bg = new Gradient();
+  bg = new ColorTripper();
   bg.addColor(new PVector(116, 0, 184));
   bg.addColor(new PVector(105, 48, 195));
   bg.addColor(new PVector(94, 96, 206));

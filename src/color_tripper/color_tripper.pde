@@ -7,7 +7,7 @@ final int cubeSize = 25;
 
 PVector sub;
 
-Gradient gradient;
+ColorTripper gradient;
 
 ArrayList<PVector> destinations;
 
@@ -20,7 +20,7 @@ void setup() {
   
 
 
-  gradient = new Gradient();
+  gradient = new ColorTripper();
   for (int i = 0; i < 2000; i++) {
     gradient.addColor(new PVector(random(255), random(255), random(255)));
   }

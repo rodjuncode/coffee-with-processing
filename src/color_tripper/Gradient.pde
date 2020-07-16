@@ -1,9 +1,9 @@
-class Gradient {
+class ColorTripper {
   ArrayList<PVector> colors;
   PVector currentColor;
   int _index;
   
-  Gradient() {
+  ColorTripper() {
     this.colors = new ArrayList<PVector>();
     this.currentColor = new PVector(0,0,0);
     this._index = -1;
