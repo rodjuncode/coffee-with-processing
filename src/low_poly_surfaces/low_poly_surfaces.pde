@@ -1,5 +1,3 @@
-import peasy.*;
-
 final int xSpacing = 30;
 final int ySpacing = 30;
 float[][] zAxis;
@@ -51,10 +49,11 @@ void setup() {
 
 void draw() {
   lights();
+  
+  bg.move();
   fill(bg.getColor().x,bg.getColor().y,bg.getColor().z);
   stroke(bg.getColor().x,bg.getColor().y,bg.getColor().z);
   //noStroke();
-  
    
   File[] files = listFiles(path); // list of files
   for (int i = 0; i < files.length; i++) {
@@ -106,7 +105,6 @@ void draw() {
     }
   }
   endShape(); 
-   
-  bg.move();
     
+  
 }
