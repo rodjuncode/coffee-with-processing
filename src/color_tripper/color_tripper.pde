@@ -43,7 +43,7 @@ void draw() {
   showDestination(destinations,gradient._index);
   
   gradient.move();
-  
+
 }
 
 void showDestination(ArrayList<PVector> destinations, int currentIndex) {

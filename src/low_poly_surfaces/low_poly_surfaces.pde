@@ -1,81 +1,75 @@
+// low poly surface movement
 final int xSpacing = 30;
 final int ySpacing = 30;
-float[][] zAxis;
 final int zDelta = 50;
 final float zBasis = 50;
-
+final float maxOffsetMove = 0.03;
+final float minOffsetMove = 0.003;
+final float offsetForce = 0.01;
+float[][] zAxis;
+float offsetMove = minOffsetMove;
 float xOff = 0;
 float yOff = 0;
 float movingXOffset = 0;
 float movingYOffset = 0;
-final float maxOffsetMove = 0.03;
-final float minOffsetMove = 0.003;
-float offsetMove = minOffsetMove;
-final float offsetForce = 0.01;
 
+// keyboard listener
+final String KEYBOARD_LISTENER_FILE = "key_log.txt";
 String path;
 long lastFileSize;
 
-ColorTripper bg;
+// dynamic color palette
+final String PALETTES_FILE = "palettes.txt";
+String palette;
+int paletteTimer = 0;
+int paletteInterval = 10*60*1000; // 10 minutes
+ColorTripper surfaceColor;
+BufferedReader paletteReader;
 
 void setup() {
   size(700,700,P3D);
   //fullScreen(P3D);
   
-  path = sketchPath();
-
-  File[] files = listFiles(path); // list of files  
-  for (int i = 0; i < files.length; i++) {
-    File f = files[i];    
-    if (f.getName().equals("key_log.txt")) {
-      lastFileSize = f.length();
-      break;
-    }
-  }
+  // keyboard listener
+  initKeyBoardListener();
   
-  bg = new ColorTripper();
-  bg.addColor(new PVector(116, 0, 184));
-  bg.addColor(new PVector(105, 48, 195));
-  bg.addColor(new PVector(94, 96, 206));
-  bg.addColor(new PVector(83, 144, 217));
-  bg.addColor(new PVector(78, 168, 222));
-  bg.addColor(new PVector(72, 191, 227));
-  bg.addColor(new PVector(86, 207, 225));
-  bg.addColor(new PVector(100, 223, 223));
-  bg.addColor(new PVector(114, 239, 221));
-  bg.addColor(new PVector(128, 255, 219));
+  // first palette
+  surfaceColor = new ColorTripper();
+  surfaceColor.addColor(new PVector(116, 0, 184));
+  surfaceColor.addColor(new PVector(105, 48, 195));
+  surfaceColor.addColor(new PVector(94, 96, 206));
+  surfaceColor.addColor(new PVector(83, 144, 217));
+  surfaceColor.addColor(new PVector(78, 168, 222));
+  surfaceColor.addColor(new PVector(72, 191, 227));
+  surfaceColor.addColor(new PVector(86, 207, 225));
+  surfaceColor.addColor(new PVector(100, 223, 223));
+  surfaceColor.addColor(new PVector(114, 239, 221));
+  surfaceColor.addColor(new PVector(128, 255, 219));
 
 }
 
 void draw() {
+  // basics
   lights();
-  
-  bg.move();
-  fill(bg.getColor().x,bg.getColor().y,bg.getColor().z);
-  stroke(bg.getColor().x,bg.getColor().y,bg.getColor().z);
+  fill(surfaceColor.getColor().x,surfaceColor.getColor().y,surfaceColor.getColor().z);
+  stroke(constrain(surfaceColor.getColor().x,100,255),
+         constrain(surfaceColor.getColor().y,100,255),
+         constrain(surfaceColor.getColor().z,100,255));
   //noStroke();
-   
-  File[] files = listFiles(path); // list of files
-  for (int i = 0; i < files.length; i++) {
-    File f = files[i];    
-    if (f.getName().equals("key_log.txt")) {
-      if (f.length() > lastFileSize) {  // key logger is growing
-        offsetMove += offsetForce;      // accelerate
-        if (offsetMove > maxOffsetMove) {
-          offsetMove = maxOffsetMove;   // wait there!
-        }
-        lastFileSize = f.length();
-      } else {
-        offsetMove -= offsetForce*0.005; // not typing
-        if (offsetMove < minOffsetMove) {
-          offsetMove = minOffsetMove;    // keep moving!
-        }
-      }
-    }
-  } 
   
-  
-    
+  surfaceColor.move();
+  listenToKeyboard();
+  drawLowPolySurface();
+  if (millis() > paletteTimer + paletteInterval) {
+    grabNewPalette(); //<>//
+    paletteTimer = millis();
+  }
+}
+
+
+// ###################### low poly surface movement
+
+void drawLowPolySurface() {
   float _off = 0.5;
   movingXOffset += offsetMove;
   movingYOffset += offsetMove;
@@ -105,6 +99,67 @@ void draw() {
     }
   }
   endShape(); 
-    
-  
+}
+
+
+// ###################### keyboard listener
+
+void initKeyBoardListener() {
+  path = sketchPath();
+  File[] files = listFiles(path); // list of files  
+  for (int i = 0; i < files.length; i++) {
+    File f = files[i];    
+    if (f.getName().equals(KEYBOARD_LISTENER_FILE)) {
+      lastFileSize = f.length();
+      break;
+    }
+  }  
+}
+
+void listenToKeyboard() {
+  File[] files = listFiles(path); // list of files
+  for (int i = 0; i < files.length; i++) {
+    File f = files[i];    
+    if (f.getName().equals(KEYBOARD_LISTENER_FILE)) {
+      if (f.length() > lastFileSize) {  // key logger is growing
+        offsetMove += offsetForce;      // accelerate
+        if (offsetMove > maxOffsetMove) {
+          offsetMove = maxOffsetMove;   // wait there!
+        }
+        lastFileSize = f.length();
+      } else {
+        offsetMove -= offsetForce*0.005; // not typing
+        if (offsetMove < minOffsetMove) {
+          offsetMove = minOffsetMove;    // keep moving!
+        }
+      }
+    }
+  } 
+}
+
+
+// ###################### dynamic color palette
+
+void grabNewPalette() {
+  String newPalette = null;
+  try {
+    paletteReader = createReader(PALETTES_FILE);
+    if (paletteReader != null) {
+    newPalette = paletteReader.readLine();
+    if (newPalette != null) {
+        surfaceColor.reset();
+        String[] colors = split(newPalette, ",");
+        for (int i = 0; i < colors.length; i++) {
+          // convert to rgb
+          int r = Integer.valueOf(colors[i].substring(1, 3), 16);
+          int g = Integer.valueOf(colors[i].substring(3, 5), 16);
+          int b = Integer.valueOf(colors[i].substring(5, 7), 16);
+          surfaceColor.addColor(new PVector(r,g,b)); // adds new color
+        }
+        paletteReader.close();
+      }
+    }
+  } catch (IOException e) {
+    e.printStackTrace();
+  }
 }
