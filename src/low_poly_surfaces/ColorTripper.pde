@@ -33,7 +33,7 @@ class ColorTripper {
     this._index = -1;
   }
   
-  void move() {
+  void move(float rate) {
     if (this.colors.size() > 1) {
       if (this._index == this.colors.size()) {
         this._index = 0;
@@ -41,7 +41,8 @@ class ColorTripper {
       if (this.colors.get(this._index).dist(this.currentColor) > 1) {
         PVector newColor = 
           PVector.sub(this.colors.get(this._index),this.currentColor);
-        newColor.normalize();        
+        newColor.normalize(); 
+        newColor.mult(rate);
         this.currentColor.add(newColor);
       } else {
         if (this._index < this.colors.size()) {
@@ -50,5 +51,11 @@ class ColorTripper {
       }
     }
   }
+  
+  void move() {
+    this.move(1L);  
+  }
+  
+  
   
 }

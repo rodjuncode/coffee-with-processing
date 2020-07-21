@@ -1,3 +1,5 @@
+import processing.sound.*;
+
 // low poly surface movement
 final int xSpacing = 30;
 final int ySpacing = 30;
@@ -19,16 +21,23 @@ String path;
 long lastFileSize;
 
 // dynamic color palette
-final String PALETTES_FILE = "palettes.txt";
+final String PALETTES_FILE = "../../../get-coolors/palettes.txt";
 String palette;
 int paletteTimer = 0;
 int paletteInterval = 10*60*1000; // 10 minutes
 ColorTripper surfaceColor;
 BufferedReader paletteReader;
 
+// audio listener
+FFT fft;
+AudioIn in;
+int bands = 512;
+float[] spectrum = new float[bands];
+
+
 void setup() {
-  size(700,700,P3D);
-  //fullScreen(P3D);
+  //size(700,700,P3D);
+  fullScreen(P3D);
   
   // keyboard listener
   initKeyBoardListener();
@@ -46,19 +55,36 @@ void setup() {
   surfaceColor.addColor(new PVector(114, 239, 221));
   surfaceColor.addColor(new PVector(128, 255, 219));
 
+  // audio listener
+  fft = new FFT(this, bands);
+  in = new AudioIn(this, 0);
+  in.start();
+  fft.input(in);
+
+
 }
 
 void draw() {
   // basics
   lights();
   fill(surfaceColor.getColor().x,surfaceColor.getColor().y,surfaceColor.getColor().z);
-  stroke(constrain(surfaceColor.getColor().x,100,255),
-         constrain(surfaceColor.getColor().y,100,255),
-         constrain(surfaceColor.getColor().z,100,255));
+  stroke(constrain(surfaceColor.getColor().x,80,255),
+         constrain(surfaceColor.getColor().y,80,255),
+         constrain(surfaceColor.getColor().z,80,255));
   //noStroke();
   
-  surfaceColor.move();
-  listenToKeyboard();
+  offsetMove = minOffsetMove;
+  fft.analyze(spectrum);
+  float maxSound = 0;
+  float minSound = 1000;
+  for(int i = 0; i < bands; i++){
+    if (spectrum[i] > maxSound) maxSound = spectrum[i];
+    if (spectrum[i] < minSound) minSound = spectrum[i];
+  } 
+  offsetMove += maxSound*0.5;
+  
+  surfaceColor.move(random(1));
+  //listenToKeyboard();
   drawLowPolySurface();
   if (millis() > paletteTimer + paletteInterval) {
     grabNewPalette(); //<>//
