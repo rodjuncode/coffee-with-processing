@@ -21,7 +21,7 @@ String path;
 long lastFileSize;
 
 // dynamic color palette
-final String PALETTES_FILE = "../../../get-coolors/palettes.txt";
+final String PALETTES_FILE = "palettes.txt";
 String palette;
 int paletteTimer = 0;
 int paletteInterval = 10*60*1000; // 10 minutes
@@ -61,7 +61,6 @@ void setup() {
   in.start();
   fft.input(in);
 
-
 }
 
 void draw() {
@@ -83,7 +82,7 @@ void draw() {
   } 
   offsetMove += maxSound*0.5;
   
-  surfaceColor.move(random(1));
+  surfaceColor.move();
   //listenToKeyboard();
   drawLowPolySurface();
   if (millis() > paletteTimer + paletteInterval) {
